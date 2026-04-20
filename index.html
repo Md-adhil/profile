@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohammed Adhil A — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0e;
+    --surface: #111318;
+    --surface2: #181b22;
+    --border: #1e2230;
+    --accent: #4fffb0;
+    --accent2: #7b61ff;
+    --accent3: #ff6b6b;
+    --text: #e8eaf0;
+    --muted: #6b7494;
+    --card-glow: 0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* GRID BG */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    background: rgba(10,11,14,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px;
+    position: relative;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(79,255,176,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    bottom: 10%;
+    right: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(123,97,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+
+  h1 .line2 {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0b0e;
+    font-weight: 500;
+  }
+
+  .btn-primary:hover {
+    background: #3de89f;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(79,255,176,0.25);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--muted);
+    background: var(--surface);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+    margin-bottom: 100px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  section { margin-bottom: 100px; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* TEACHING */
+  .teaching-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .teach-card {
+    background: var(--surface);
+    padding: 28px;
+    transition: background 0.2s;
+  }
+
+  .teach-card:hover { background: var(--surface2); }
+
+  .teach-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .teach-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .teach-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* STACK */
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .stack-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .stack-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(79,255,176,0.05);
+  }
+
+  .chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    h1 { font-size: 2.5rem; }
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .project-card:hover {
+    border-color: #2a2f42;
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-card.large {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (max-width: 720px) {
+    .project-card.large {
+      grid-column: span 1;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .project-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .project-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .project-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    background: rgba(79,255,176,0.08);
+    border: 1px solid rgba(79,255,176,0.2);
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .tag.purple {
+    background: rgba(123,97,255,0.08);
+    border-color: rgba(123,97,255,0.2);
+    color: var(--accent2);
+  }
+
+  .tag.red {
+    background: rgba(255,107,107,0.08);
+    border-color: rgba(255,107,107,0.2);
+    color: var(--accent3);
+  }
+
+  .project-viz {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+
+  .project-viz .kw { color: var(--accent2); }
+  .project-viz .fn { color: var(--accent); }
+  .project-viz .str { color: #f9a26c; }
+  .project-viz .cm { color: #3a4060; }
+
+  /* COMMIT GUIDE */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) {
+    .guide-grid { grid-template-columns: 1fr; }
+  }
+
+  .guide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .guide-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .commit-example {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .commit-type {
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .ct-feat { background: rgba(79,255,176,0.15); color: var(--accent); }
+  .ct-fix  { background: rgba(255,107,107,0.15); color: var(--accent3); }
+  .ct-docs { background: rgba(123,97,255,0.15); color: var(--accent2); }
+  .ct-ref  { background: rgba(249,162,108,0.15); color: #f9a26c; }
+
+  .commit-msg { color: var(--muted); line-height: 1.4; }
+
+  /* CONTACT */
+  .contact-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .contact-card:hover {
+    border-color: var(--accent);
+    background: rgba(79,255,176,0.04);
+  }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .contact-val {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 60px;
+  }
+
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .fade-up:nth-child(1) { animation-delay: 0.1s; }
+  .fade-up:nth-child(2) { animation-delay: 0.2s; }
+  .fade-up:nth-child(3) { animation-delay: 0.35s; }
+  .fade-up:nth-child(4) { animation-delay: 0.5s; }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="nav-logo">Welcome to My story</a>
+    <ul class="nav-links">
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="container">
+    <h1 class="fade-up">
+      Mohammed<br>
+      Adhil A<span class="cursor-blink"></span><br>
+      <span class="line2">Assistant Professor, Computer Science</span>
+    </h1>
+    <p class="hero-desc fade-up" align="justify">
+  <strong>I’m Mohammed Adhil A, an MCA graduate with experience in both the IT industry and academia, currently working as an Assistant Professor where I teach core computer science concepts and guide students in applying them to real-world scenarios.<br><br>
+  
+  My background combines strong technical knowledge with the ability to communicate complex ideas clearly, making learning more practical and accessible.<br><br>
+  
+  I’m particularly interested in software development, problem-solving, and building real-world applications, and I’m actively seeking opportunities to move into a more technically focused role where I can deepen my skills and contribute to impactful projects.</strong>
+</p>
+    <div class="btn-row fade-up">
+      <a href="https://github.com/Md-adhil" class="btn btn-primary" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a href="mailto:mohammedadhil467@gmail.com" class="btn btn-outline">Get in with mail</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-num">2 </span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Courses Taught</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Open Source Projects</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">1</span>
+        <span class="stat-label">Industry Experience</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TEACHING -->
+  <section id="teaching">
+    <div class="section-header">
+      <span class="section-tag">// 01</span>
+      <h2>What I Teach</h2>
+    </div>
+    <div class="teaching-grid">
+      <div class="teach-card">
+        <span class="teach-icon">🐍</span>
+        <h3>Python Programming</h3>
+        <p>Core language fundamentals, data structures, file I/O, OOP principles, and real-world scripting.</p>
+      </div>
+      <div class="teach-card">
+        <span class="teach-icon">🤖</span>
+        <h3>Artificial Intelligence</h3>
+        <p>ML fundamentals, computer vision pipelines, neural networks, and hands-on Python implementations.</p>
+      </div>
+      <div class="teach-card">
+        <span class="teach-icon">🌐</span>
+        <h3>Computer Networks</h3>
+        <p>TCP/IP stack, routing protocols, socket programming, and network simulation tools.</p>
+      </div>
+      <div class="teach-card">
+        <span class="teach-icon">💻</span>
+        <h3>Web Development</h3>
+        <p>HTML/CSS/JS fundamentals, REST APIs, Flask backend, full-stack architecture patterns.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-header">
+      <span class="section-tag">// 02</span>
+      <h2>Technical Stack</h2>
+    </div>
+    <div class="stack-list">
+      <div class="stack-chip"><span class="chip-dot"></span>Python</div>
+      <div class="stack-chip"><span class="chip-dot"></span>OpenCV</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent2)"></span>DeepFace</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent2)"></span>Flutter</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent2)"></span>Dart</div>
+      <div class="stack-chip"><span class="chip-dot"></span>Flask</div>
+      <div class="stack-chip"><span class="chip-dot"></span>SQLAlchemy</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent3)"></span>Git</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent3)"></span>Linux</div>
+      <div class="stack-chip"><span class="chip-dot"></span>Jupyter</div>
+      <div class="stack-chip"><span class="chip-dot" style="background:var(--accent2)"></span>Firebase</div>
+      <div class="stack-chip"><span class="chip-dot"></span>Bootstrap</div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-tag">// 03</span>
+      <h2>Featured Projects</h2>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card" style="--card-accent: var(--accent);">
+        <div class="project-num">Project 01</div>
+        <h3>Face Recognition<br>Attendance System</h3>
+        <p>Automates classroom attendance using real-time face detection. Students recorded as present within seconds of entering the frame. Eliminates proxy attendance entirely.</p>
+        <div class="tag-row">
+          <span class="tag">Python</span>
+          <span class="tag">OpenCV</span>
+          <span class="tag">DeepFace</span>
+          <span class="tag">pandas</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: var(--accent2);">
+        <div class="project-num">Project 02</div>
+        <h3>StreamBeats<br>Flutter Music App</h3>
+        <p>A Spotify-inspired music streaming UI built entirely in Flutter. Demonstrates state management, audio playback, and cross-platform mobile architecture in a real-world context.</p>
+        <div class="tag-row">
+          <span class="tag purple">Flutter</span>
+          <span class="tag purple">Dart</span>
+          <span class="tag purple">Provider</span>
+          <span class="tag purple">just_audio</span>
+        </div>
+      </div>
+
+      <div class="project-card large" style="--card-accent: var(--accent3);">
+        <div>
+          <div class="project-num">Project 03 — Teaching Reference</div>
+          <h3>Student Record Manager</h3>
+          <p>A full-stack student management system with role-based access (Admin / Faculty / Student), CRUD operations, grade management, GPA calculation, and CSV/PDF export. Used directly as a course reference in Web Development — students receive a version with key features removed and must implement them as assignments.</p>
+          <div class="tag-row" style="margin-top:20px">
+            <span class="tag red">Flask</span>
+            <span class="tag red">SQLAlchemy</span>
+            <span class="tag red">Bootstrap</span>
+            <span class="tag red">SQLite</span>
+            <span class="tag red">pytest</span>
+          </div>
+        </div>
+        <div class="project-viz">
+<span class="cm"># student_record_manager/app/models.py</span><br><br>
+<span class="kw">class</span> <span class="fn">Student</span>(db.Model):<br>
+&nbsp;&nbsp;id = db.Column(db.Integer,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_key=<span class="kw">True</span>)<br>
+&nbsp;&nbsp;roll_no = db.Column(db.String(<span class="str">20</span>))<br>
+&nbsp;&nbsp;name = db.Column(db.String(<span class="str">120</span>))<br>
+&nbsp;&nbsp;dept = db.Column(db.String(<span class="str">60</span>))<br>
+&nbsp;&nbsp;year = db.Column(db.Integer)<br><br>
+&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">gpa</span>(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"># calculate from grades</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="fn">round</span>(avg, <span class="str">2</span>)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMMIT GUIDE -->
+  <section id="guide">
+    <div class="section-header">
+      <span class="section-tag">// 04</span>
+      <h2>Commit Standards</h2>
+    </div>
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h3>✅ Good Commit Messages</h3>
+        <div class="commit-example">
+          <span class="commit-type ct-feat">feat</span>
+          <span class="commit-msg">add face recognition loop with DeepFace.verify()</span>
+        </div>
+        <div class="commit-example">
+          <span class="commit-type ct-fix">fix</span>
+          <span class="commit-msg">prevent duplicate attendance entries in same session</span>
+        </div>
+        <div class="commit-example">
+          <span class="commit-type ct-docs">docs</span>
+          <span class="commit-msg">add installation steps and folder structure to README</span>
+        </div>
+        <div class="commit-example">
+          <span class="commit-type ct-ref">refactor</span>
+          <span class="commit-msg">extract CSV logger into separate module</span>
+        </div>
+      </div>
+      <div class="guide-card">
+        <h3>❌ Poor Commit Messages</h3>
+        <div class="commit-example" style="opacity:0.5">
+          <span class="commit-type" style="background:#1a1a1a;color:#444">???</span>
+          <span class="commit-msg">update</span>
+        </div>
+        <div class="commit-example" style="opacity:0.5">
+          <span class="commit-type" style="background:#1a1a1a;color:#444">???</span>
+          <span class="commit-msg">fix bug</span>
+        </div>
+        <div class="commit-example" style="opacity:0.5">
+          <span class="commit-type" style="background:#1a1a1a;color:#444">???</span>
+          <span class="commit-msg">final version</span>
+        </div>
+        <div class="commit-example" style="opacity:0.5">
+          <span class="commit-type" style="background:#1a1a1a;color:#444">???</span>
+          <span class="commit-msg">asdfghjkl</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-tag">// 05</span>
+      <h2>Get in Touch</h2>
+    </div>
+    <div class="contact-row">
+      <a href="mailto:mohammedadhil467@gmail.com" class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">mohammedadhil467@gmail.com</div>
+        </div>
+      </a>
+      <a href="www.linkedin.com/in/mohammed-adhil-2382b01a3" target="_blank" class="contact-card">
+        <div class="contact-icon">in</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val">www.linkedin.com/in/mohammed-adhil-2382b01a3</div>
+        </div>
+      </a>
+      <a href="https://github.com/Md-adhil" target="_blank" class="contact-card">
+        <div class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-val">https://github.com/Md-adhil</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <span class="footer-text">Mohammed Adhil A — Assistant Professor, Computer Science</span>
+    <span class="footer-text">Built for academic & technical credibility</span>
+  </div>
+</footer>
+
+</body>
+</html>
